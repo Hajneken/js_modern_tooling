@@ -89,3 +89,90 @@ module.exports = {
 **important note:** webpack uses node process and therefore uses `require()` to import modules 
 
 >The code intended to run in a browser uses ES module syntax and is transformed with Babel into code that will work in a browser environment
+
+
+## Babel 
+
+> adds ability to compile new JS to older JS  
+
+### Installing Babel 
+
+install by `npm i -D @babel/core @babel/cli @babel/preset-env`
+
+### Running Babel
+
+run by `node_modules/.bin/babel` or shortcut `$(npm bin)/babel`
+
+to run certain file `$(npm bin)/babel ./src/greet.js`
+
+to run babel in order to return backwards compatible JS 
+
+`$(npm bin)/babel ./src/greet.js --presets=@babel/preset-env`
+
+### Configuring Babel to work together with Webpack
+
+by installing `npm i -D babel-loader`
+
+now we have the ability to configure loaders in our `webpack.config.js` to pass our code through before it ultimately gets bundled for distribution
+
+in `webpack.config.js` we add the following 
+
+```JS
+{
+    ...
+    module:{
+      rules:[
+          {
+              test: /\.js$/,
+              loader: 'babel-loader',
+              exclude: /node_modules/,
+              options: {
+                  presets: ['@babel/preset-env']
+              }
+          }
+      ]
+  }
+}
+```
+
+> Webpack has used the babel-loader to transform our code before creating our output bundle
+
+
+## Configuring Babel for React 
+
+first install `npm i -S react react-dom prop-types`
+
+create top level React component `<App/>`
+
+the problem is that **JSX** is not valid JS
+
+we need to configure it
+1. install `npm i -D @babel/preset-react`
+2. add `@babel/preset-react` to presets in `webpack.config.js`
+
+## Injecting JS bundle into HTML 
+
+install html plugin for webpack
+`npm i -D html-webpack-plugin`
+
+we create html5 boilerpalte in `./src/index.html`
+
+then in `webpack.config.js` we add 
+
+```JS
+...
+plugins: [new HtmlWebpackPlugin({
+      template:'./src/index.html'
+  })]
+...
+```
+
+this takes our template and injects it to our dist `index.html`
+
+### Automatically update bundle with file save 
+
+in `package.json` add to `scripts:` 
+`"dev" : "webpack --watch --mode development"`
+
+when running `npm run dev` our app is watching for changes and also shows human readable code
+

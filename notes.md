@@ -57,10 +57,35 @@ to build it for dev purposes run
 > `.gitignore` is just going to take plaintext paths
 
 
-
-
-## Fun fact 
-
+**FUN FACT**
 > `/.bin` stands for binary which historically refers to executable files 
 > (despite files in this direcotry need not to be binary nowadays)
 
+
+### Configuring webpack 
+
+> using the file `webpack.config.js` we can configure webpack
+
+We need to be explicit in configuration file
+
+therefore we cannot specify `path:'/dist'` but we need to specify absolute path
+
+like the following
+
+```js
+// path module 
+const path = require("path");
+
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    //   __dirname is global variable in node that gives us our current directory 
+    path: path.join(__dirname, "dist"),
+    filename: "app.bundle.js"
+  }
+};
+```
+
+**important note:** webpack uses node process and therefore uses `require()` to import modules 
+
+>The code intended to run in a browser uses ES module syntax and is transformed with Babel into code that will work in a browser environment

@@ -176,3 +176,122 @@ in `package.json` add to `scripts:`
 
 when running `npm run dev` our app is watching for changes and also shows human readable code
 
+### Modularize webpack 
+
+> As our webpack.config gets more and more complicated, we have more chances that we're going to want to override things for our development build versus a production build, and vice-versa. It would be nice to maintain two separate configs without duplicating any of the settings that are shared between the two
+
+install `npm i -D webpack-merge` 
+
+file for settings common for development and production settings: `webpack.config.base.js`
+
+file for specific overrides in development `webpack.config.dev.js`
+
+```JS 
+module.exports = merge(baseConfig, {
+    mode:'development',
+})
+```
+
+file for specific overrides in production `webpack.config.prod.js`  
+
+in `package.json` update scripts to point to new files 
+
+```JSON
+"scripts": {
+    "build": "webpack --config webpack.config.prod.js",
+    "dev": "webpack --watch --config webpack.config.dev.js",
+    ...
+```
+
+## Run your APP on localhost simulated server
+
+`npm i -D webpack-dev-server`
+
+in `package.json` update dev in `scripts`
+
+```JSON
+"scripts": {
+    ...
+    "dev": "webpack-dev-server --watch --config webpack.config.dev.js",
+    ...
+```
+
+in `webpack.config.dev.js` we can specify on what port to run it
+
+```JS
+devServer:{
+        port: 9000
+    }
+```
+
+## Source maps 
+
+> map our source code to the code that's actually running in the browser
+
+in `webpack.config.dev.js` we add 
+
+```JS 
+...
+devtool:'source-map'
+```
+
+now when we debug we can see our source code in console 
+
+### Support Proposed JavaScript Features with Babel
+
+> transpile bleeding edge syntax 
+
+we install it via `npm i -D @babel/plugin-proposal-class-properties` 
+
+## Supporting CSS 
+
+install loaders for styles `npm i -D css-loader style-loader`
+
+create stylesheet 
+
+import it in `index.js`
+
+in `webpack.config.base.js` add a new `rule`
+
+```JS
+{
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+        exclude: /node_modules/
+      }
+```
+## Hot Reload 
+
+> if we want to avoid full-reload of our application we use so called "hot reloading"
+> app refreshes with our state 
+
+install it via `npm i -S react-hot-loader`
+
+add it as a plugin in `webpack.config.base.js` 
+
+then in `package.json` add a new `script`
+
+`"dev:hot": "webpack-dev-server --config --hot webpack.config.dev.js",`
+
+note: it is better to seperate `dev` and `dev:hot`
+
+### How to avoid duplicate commands in npm
+
+in `package.json` we can specify command just like we would run in it in a console as a value of a script `name`
+
+eg. 
+```json
+"dev:something":"npm run dev -- --something"
+```
+
+we pass flag by showing `--` first and then adding `--flagname`
+
+
+## Analyze bundle 
+
+`npm i -D webpack-bundle-analyzer`
+
+
+
+
+

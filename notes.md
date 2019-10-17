@@ -203,7 +203,7 @@ in `package.json` update scripts to point to new files
     ...
 ```
 
-## Run your APP on localhost simulated server
+## Webpack: Run your APP on localhost simulated server
 
 `npm i -D webpack-dev-server`
 
@@ -224,7 +224,7 @@ devServer:{
     }
 ```
 
-## Source maps 
+## Webpack: Source maps 
 
 > map our source code to the code that's actually running in the browser
 
@@ -243,7 +243,7 @@ now when we debug we can see our source code in console
 
 we install it via `npm i -D @babel/plugin-proposal-class-properties` 
 
-## Supporting CSS 
+## Webpack: Supporting CSS 
 
 install loaders for styles `npm i -D css-loader style-loader`
 
@@ -260,7 +260,7 @@ in `webpack.config.base.js` add a new `rule`
         exclude: /node_modules/
       }
 ```
-## Hot Reload 
+## Webpack: Hot Reload 
 
 > if we want to avoid full-reload of our application we use so called "hot reloading"
 > app refreshes with our state 
@@ -287,9 +287,101 @@ eg.
 we pass flag by showing `--` first and then adding `--flagname`
 
 
-## Analyze bundle 
+## Webpack: Analyze bundle 
+
+> figure out the size of the bundle and visualize it
 
 `npm i -D webpack-bundle-analyzer`
+
+add in `webpack.config.prod.js` a new plugin
+
+```JS 
+module.exports = merge(baseConfig, {
+    mode:'production',
+    plugins: [new BundleAnalyzerPlugin()]
+})
+```
+to show it in a static HTML 
+add to Function constructor option
+
+```JS 
+{
+      analyzerMode: 'static'
+    }
+```
+
+## Webpack: Externalize Dependencies to be loaded via CDN
+
+> in production we would like not to include React library for user to download, but we want to use CDN to deliver React library instead 
+
+in `webpack.config.prod.js` we insert to module `externals` to say what external libraries we want to use 
+
+```JS
+externals: {
+        react: 'React',
+        'react-dom': 'ReactDOM'
+    }
+```
+
+afterwards add cdn to our html template  
+
+```js
+ <% if(process.env.NODE_ENV === 'production') { %>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@16/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"
+    ></script>
+    <% } %>
+```
+## Polyfills for features backward compatibality
+
+install `npm i -S polyfill`
+
+in `/src/index.js` import `import '@babel/polyfill';`
+
+> shit ton of polyfills will be available 
+
+in `webpack.config.base.js` target a specific browser 
+
+in `presets` change `"@babel/preset-env"` to an array and object as options as a second parameter, specifying e.g. we want to target chrome version 68 and above 
+
+```JS
+["@babel/preset-env",{
+              targets: {
+                  chrome: 68
+              },
+              useBuiltIns: 'entry'
+          }]
+```
+
+### How to analyze browsers from CLI
+
+use tool **browserslist**
+
+run `npx browserslist "last 2 versions` to show list of browsers and their last 2 versions
+
+#### show last 2 versions of browsers that are not dead and have over 2 procent of market share.
+
+`npx browserslist "last 2 versions, not dead, not < 2%"`
+
+to translate it into config in `webpack.config.base.js`
+
+```js
+{
+  targets: [
+    'last 2 versions',
+    'not dead',
+    'not < 2%'
+  ] 
+  ...
+}
+```
+
+in `targets` developer can easilly influence which browsers to support 
 
 
 

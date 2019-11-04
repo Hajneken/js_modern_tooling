@@ -1,3 +1,5 @@
-import React from 'react';
+import React from 'react'
 
-export default () => <span className={"warning"}>Yo buddy, chill!</span>
+const Warning =  () => <span className={'warning'}>Yo buddy, chill!</span>
+
+export default Warning;

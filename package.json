@@ -7,7 +7,9 @@
     "build": "webpack --config webpack.config.prod.js",
     "dev": "webpack-dev-server --open --config webpack.config.dev.js",
     "dev:hot": "npm run dev -- --hot",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "format": "pretty-quick",
+    "lint": "eslint ./"
   },
   "repository": {
     "type": "git",
@@ -25,9 +27,15 @@
     "@babel/core": "^7.6.3",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.6.3",
+    "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
+    "eslint": "^6.6.0",
+    "eslint-plugin-react": "^7.16.0",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^2.0.0",
     "style-loader": "^1.0.0",
     "webpack": "^4.41.0",
     "webpack-bundle-analyzer": "^3.6.0",

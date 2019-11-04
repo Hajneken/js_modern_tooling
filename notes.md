@@ -1,8 +1,8 @@
 # Notes for modern tooling
 
-## NPM 
+## NPM
 
-initialize project 
+initialize project
 
 `npm init`
 
@@ -22,19 +22,20 @@ adding specified file `package.json` to git
 
 ## Webpack
 
-installing webpack 
+installing webpack
 `npm install --save-dev webpack webpack-cli`
 
-### Starting webpack 
+### Starting webpack
 
 > webpack looks for `index.js` and outputs minified version to `./dist/main.js` by default
 
-* we can run webpack from node_modules `node_modules/.bin/webpack`
-* better way is to configure script in `"script"` within `package.json` 
+- we can run webpack from node_modules `node_modules/.bin/webpack`
+- better way is to configure script in `"script"` within `package.json`
 
 by default, npm can recognize package needs to be run from `node_modules`
 
 therefore following will suffice
+
 ```JSON
 "scripts": {
     "build": "webpack"
@@ -44,7 +45,8 @@ therefore following will suffice
 we then execute this script by `npm run build`
 
 ### Running webpack in development mode
-> in production mode (default) webpack minifies our file which is not readable 
+
+> in production mode (default) webpack minifies our file which is not readable
 
 to build it for dev purposes run
 
@@ -52,17 +54,16 @@ to build it for dev purposes run
 
 ## Gitignore
 
-> in `.gitignore` specify everything that we don't want to push to remote server 
+> in `.gitignore` specify everything that we don't want to push to remote server
 
 > `.gitignore` is just going to take plaintext paths
 
-
 **FUN FACT**
-> `/.bin` stands for binary which historically refers to executable files 
+
+> `/.bin` stands for binary which historically refers to executable files
 > (despite files in this direcotry need not to be binary nowadays)
 
-
-### Configuring webpack 
+### Configuring webpack
 
 > using the file `webpack.config.js` we can configure webpack
 
@@ -73,29 +74,28 @@ therefore we cannot specify `path:'/dist'` but we need to specify absolute path
 like the following
 
 ```js
-// path module 
-const path = require("path");
+// path module
+const path = require('path')
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: './src/index.js',
   output: {
-    //   __dirname is global variable in node that gives us our current directory 
-    path: path.join(__dirname, "dist"),
-    filename: "app.bundle.js"
+    //   __dirname is global variable in node that gives us our current directory
+    path: path.join(__dirname, 'dist'),
+    filename: 'app.bundle.js'
   }
-};
+}
 ```
 
-**important note:** webpack uses node process and therefore uses `require()` to import modules 
+**important note:** webpack uses node process and therefore uses `require()` to import modules
 
->The code intended to run in a browser uses ES module syntax and is transformed with Babel into code that will work in a browser environment
+> The code intended to run in a browser uses ES module syntax and is transformed with Babel into code that will work in a browser environment
 
+## Babel
 
-## Babel 
+> adds ability to compile new JS to older JS
 
-> adds ability to compile new JS to older JS  
-
-### Installing Babel 
+### Installing Babel
 
 install by `npm i -D @babel/core @babel/cli @babel/preset-env`
 
@@ -105,7 +105,7 @@ run by `node_modules/.bin/babel` or shortcut `$(npm bin)/babel`
 
 to run certain file `$(npm bin)/babel ./src/greet.js`
 
-to run babel in order to return backwards compatible JS 
+to run babel in order to return backwards compatible JS
 
 `$(npm bin)/babel ./src/greet.js --presets=@babel/preset-env`
 
@@ -115,7 +115,7 @@ by installing `npm i -D babel-loader`
 
 now we have the ability to configure loaders in our `webpack.config.js` to pass our code through before it ultimately gets bundled for distribution
 
-in `webpack.config.js` we add the following 
+in `webpack.config.js` we add the following
 
 ```JS
 {
@@ -137,8 +137,7 @@ in `webpack.config.js` we add the following
 
 > Webpack has used the babel-loader to transform our code before creating our output bundle
 
-
-## Configuring Babel for React 
+## Configuring Babel for React
 
 first install `npm i -S react react-dom prop-types`
 
@@ -147,17 +146,18 @@ create top level React component `<App/>`
 the problem is that **JSX** is not valid JS
 
 we need to configure it
+
 1. install `npm i -D @babel/preset-react`
 2. add `@babel/preset-react` to presets in `webpack.config.js`
 
-## Injecting JS bundle into HTML 
+## Injecting JS bundle into HTML
 
 install html plugin for webpack
 `npm i -D html-webpack-plugin`
 
 we create html5 boilerpalte in `./src/index.html`
 
-then in `webpack.config.js` we add 
+then in `webpack.config.js` we add
 
 ```JS
 ...
@@ -169,32 +169,32 @@ plugins: [new HtmlWebpackPlugin({
 
 this takes our template and injects it to our dist `index.html`
 
-### Automatically update bundle with file save 
+### Automatically update bundle with file save
 
-in `package.json` add to `scripts:` 
+in `package.json` add to `scripts:`
 `"dev" : "webpack --watch --mode development"`
 
 when running `npm run dev` our app is watching for changes and also shows human readable code
 
-### Modularize webpack 
+### Modularize webpack
 
 > As our webpack.config gets more and more complicated, we have more chances that we're going to want to override things for our development build versus a production build, and vice-versa. It would be nice to maintain two separate configs without duplicating any of the settings that are shared between the two
 
-install `npm i -D webpack-merge` 
+install `npm i -D webpack-merge`
 
 file for settings common for development and production settings: `webpack.config.base.js`
 
 file for specific overrides in development `webpack.config.dev.js`
 
-```JS 
+```JS
 module.exports = merge(baseConfig, {
     mode:'development',
 })
 ```
 
-file for specific overrides in production `webpack.config.prod.js`  
+file for specific overrides in production `webpack.config.prod.js`
 
-in `package.json` update scripts to point to new files 
+in `package.json` update scripts to point to new files
 
 ```JSON
 "scripts": {
@@ -224,30 +224,30 @@ devServer:{
     }
 ```
 
-## Webpack: Source maps 
+## Webpack: Source maps
 
 > map our source code to the code that's actually running in the browser
 
-in `webpack.config.dev.js` we add 
+in `webpack.config.dev.js` we add
 
-```JS 
+```JS
 ...
 devtool:'source-map'
 ```
 
-now when we debug we can see our source code in console 
+now when we debug we can see our source code in console
 
 ### Support Proposed JavaScript Features with Babel
 
-> transpile bleeding edge syntax 
+> transpile bleeding edge syntax
 
-we install it via `npm i -D @babel/plugin-proposal-class-properties` 
+we install it via `npm i -D @babel/plugin-proposal-class-properties`
 
-## Webpack: Supporting CSS 
+## Webpack: Supporting CSS
 
 install loaders for styles `npm i -D css-loader style-loader`
 
-create stylesheet 
+create stylesheet
 
 import it in `index.js`
 
@@ -260,14 +260,15 @@ in `webpack.config.base.js` add a new `rule`
         exclude: /node_modules/
       }
 ```
-## Webpack: Hot Reload 
+
+## Webpack: Hot Reload
 
 > if we want to avoid full-reload of our application we use so called "hot reloading"
-> app refreshes with our state 
+> app refreshes with our state
 
 install it via `npm i -S react-hot-loader`
 
-add it as a plugin in `webpack.config.base.js` 
+add it as a plugin in `webpack.config.base.js`
 
 then in `package.json` add a new `script`
 
@@ -279,15 +280,15 @@ note: it is better to seperate `dev` and `dev:hot`
 
 in `package.json` we can specify command just like we would run in it in a console as a value of a script `name`
 
-eg. 
+eg.
+
 ```json
 "dev:something":"npm run dev -- --something"
 ```
 
 we pass flag by showing `--` first and then adding `--flagname`
 
-
-## Webpack: Analyze bundle 
+## Webpack: Analyze bundle
 
 > figure out the size of the bundle and visualize it
 
@@ -295,16 +296,17 @@ we pass flag by showing `--` first and then adding `--flagname`
 
 add in `webpack.config.prod.js` a new plugin
 
-```JS 
+```JS
 module.exports = merge(baseConfig, {
     mode:'production',
     plugins: [new BundleAnalyzerPlugin()]
 })
 ```
-to show it in a static HTML 
+
+to show it in a static HTML
 add to Function constructor option
 
-```JS 
+```JS
 {
       analyzerMode: 'static'
     }
@@ -312,9 +314,9 @@ add to Function constructor option
 
 ## Webpack: Externalize Dependencies to be loaded via CDN
 
-> in production we would like not to include React library for user to download, but we want to use CDN to deliver React library instead 
+> in production we would like not to include React library for user to download, but we want to use CDN to deliver React library instead
 
-in `webpack.config.prod.js` we insert to module `externals` to say what external libraries we want to use 
+in `webpack.config.prod.js` we insert to module `externals` to say what external libraries we want to use
 
 ```JS
 externals: {
@@ -323,7 +325,7 @@ externals: {
     }
 ```
 
-afterwards add cdn to our html template  
+afterwards add cdn to our html template
 
 ```js
  <% if(process.env.NODE_ENV === 'production') { %>
@@ -337,17 +339,18 @@ afterwards add cdn to our html template
     ></script>
     <% } %>
 ```
+
 ## Polyfills for features backward compatibality
 
 install `npm i -S polyfill`
 
 in `/src/index.js` import `import '@babel/polyfill';`
 
-> shit ton of polyfills will be available 
+> shit ton of polyfills will be available
 
-in `webpack.config.base.js` target a specific browser 
+in `webpack.config.base.js` target a specific browser
 
-in `presets` change `"@babel/preset-env"` to an array and object as options as a second parameter, specifying e.g. we want to target chrome version 68 and above 
+in `presets` change `"@babel/preset-env"` to an array and object as options as a second parameter, specifying e.g. we want to target chrome version 68 and above
 
 ```JS
 ["@babel/preset-env",{
@@ -376,14 +379,87 @@ to translate it into config in `webpack.config.base.js`
     'last 2 versions',
     'not dead',
     'not < 2%'
-  ] 
+  ]
   ...
 }
 ```
 
-in `targets` developer can easilly influence which browsers to support 
+in `targets` developer can easilly influence which browsers to support
 
+### Use async bundle loading
 
+> imporve page performance and load resources only when we need them
 
+import component like this
 
+```JS
+const Warning = React.lazy(()=> import('/.Warning'));
+```
+
+to whichever component we want to import
+
+`React.lazy()` accepts dynamic `import` function
+
+then in our component with dynamic import we need to add
+
+```JS
+  <React.Suspense fallback={null}>
+    <Warning />
+  </React.Suspense>
+```
+
+in case `import()` is not supported
+install plugin with
+
+`npm i -D @babel/plugin-syntax-dynamic-import`
+
+## Run tests with Jest
+
+install by:
+
+`npm i -D jest`
+
+if we want to write a test:
+
+files need to be in `__tests__` or named `App.spec.js` or `App.test.js`
+
+then write tests
+
+run by `npm test`
+
+**NEEDS REVISION and ADDITION**
+
+## Formating code with Prettier
+
+> automate formating of **all** code
+
+install by
+`npm i -D prettier pretty-quick`
+
+add `"format": "pretty-quick"` to `package.json`
+
+then run `npm run format` to automatically format everything since the last commit
+
+_fun fact_ : `rc` in at the end of `.somenamerc` stands for runcom which is 'run commands' dating back to UNIX
+
+in order to format all JS files run
+
+`npx prettier --write "**/*.js"`
+
+to specifiy which files should be ignored (e.g. generated files)
+
+add `.prettierignore` and add files just like in `.gitignore`
+
+## Avoiding errors with ESLint 
+
+`npm i -D eslint eslint-plugin-react`
+
+add `"lint": "eslint ./"` to `package.json` in `scripts`
+
+to configure `.eslintrc.json` run
+
+`npx eslint --init` and go through all questions 
+
+to fix problems read through the log 
+e.g. `it` or `describe` methods are not described add `"jest":true` into environment 
 

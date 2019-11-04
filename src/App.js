@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import { hot } from 'react-hot-loader'
 
 const Warning = React.lazy(() => import('./Warning'))
@@ -6,11 +6,10 @@ const Warning = React.lazy(() => import('./Warning'))
 class App extends React.Component {
   state = {
     count: 0
-  };
+  }
 
   render() {
-
-    const {count} = this.state;
+    const { count } = this.state
 
     return (
       <div>
@@ -34,15 +33,14 @@ class App extends React.Component {
         >
           -1
         </button>
-        {count > 10 ?
-        <React.Suspense fallback={null}>
+        {count > 10 ? (
+          <React.Suspense fallback={null}>
             <Warning />
-        </React.Suspense>
-         : null}
+          </React.Suspense>
+        ) : null}
       </div>
-    );
+    )
   }
 }
-
 
 export default hot(module)(App)

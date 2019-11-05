@@ -11,6 +11,9 @@
     "format": "pretty-quick",
     "lint": "eslint ./"
   },
+  "husky":{
+    "pre-commit" : "npm run lint"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Hajneken/js_modern_tooling.git"
@@ -33,6 +36,7 @@
     "eslint": "^6.6.0",
     "eslint-plugin-react": "^7.16.0",
     "html-webpack-plugin": "^3.2.0",
+    "husky": "^3.0.9",
     "jest": "^24.9.0",
     "prettier": "^1.18.2",
     "pretty-quick": "^2.0.0",

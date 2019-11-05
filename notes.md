@@ -463,3 +463,24 @@ to configure `.eslintrc.json` run
 to fix problems read through the log 
 e.g. `it` or `describe` methods are not described add `"jest":true` into environment 
 
+## Git Hooks - linting, tests and prettier 
+
+hooks : scripts fired on events happening (pre-commit etc.)
+
+begin by installing  husky (takes pain away from creating hooks)
+
+`npm i -D husky`
+
+in `package.json` add 
+
+```JSON
+"husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+},
+```
+
+
+
+

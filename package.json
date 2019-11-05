@@ -12,7 +12,7 @@
     "lint": "eslint ./"
   },
   "husky":{
-    "pre-commit" : "npm run lint"
+    "pre-commit" : "pretty-quick --staged && npm run lint"
   },
   "repository": {
     "type": "git",

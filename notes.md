@@ -480,7 +480,43 @@ in `package.json` add
     }
 },
 ```
+how to run multiple commands? 
 
+`npm run something && npm run somethingElse`
 
+`pretty-quick --staged` is only applied on staged files
 
+## Create a new project from a boilerplate
 
+clone boilerplate project in a new directory
+
+`git clone --depth=1 git@github.com:blah/blah new-app-folder`
+
+`--depth=1` shows only last commit 
+
+remove `.git`
+
+`rm -rf .git`
+
+initialize git 
+
+`git init` > `git add .` > `git commit -m "Initital Commit"`
+
+create new repository
+
+`git remote add origin git@github.com/somethingremoteblah"`
+
+update project `package.json`
+
+in `package.json` 
+
+1. change `"name"`
+1. delete `"repository"`
+1. delete `"bugs"`
+1. delete `"homepage"`
+
+update project by `npm init -y`
+
+update `readme.md`
+
+run `npm i` 
